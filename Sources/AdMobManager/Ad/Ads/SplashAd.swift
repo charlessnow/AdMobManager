@@ -7,7 +7,7 @@
 
 import UIKit
 import GoogleMobileAds
-import AppsFlyerAdRevenue
+//import AppsFlyerAdRevenue
 
 class SplashAd: NSObject, AdProtocol {
   private var splashAd: GADInterstitialAd?
@@ -126,18 +126,18 @@ extension SplashAd {
         self.splashAd?.present(fromRootViewController: rootViewController)
         
         ad.paidEventHandler = { adValue in
-          let adRevenueParams: [AnyHashable: Any] = [
-            kAppsFlyerAdRevenueCountry: "US",
-            kAppsFlyerAdRevenueAdUnit: adUnitID as Any,
-            kAppsFlyerAdRevenueAdType: "Interstitial_Splash"
-          ]
-          
-          AppsFlyerAdRevenue.shared().logAdRevenue(
-            monetizationNetwork: "admob",
-            mediationNetwork: MediationNetworkType.googleAdMob,
-            eventRevenue: adValue.value,
-            revenueCurrency: adValue.currencyCode,
-            additionalParameters: adRevenueParams)
+//          let adRevenueParams: [AnyHashable: Any] = [
+//            kAppsFlyerAdRevenueCountry: "US",
+//            kAppsFlyerAdRevenueAdUnit: adUnitID as Any,
+//            kAppsFlyerAdRevenueAdType: "Interstitial_Splash"
+//          ]
+//          
+//          AppsFlyerAdRevenue.shared().logAdRevenue(
+//            monetizationNetwork: "admob",
+//            mediationNetwork: MediationNetworkType.googleAdMob,
+//            eventRevenue: adValue.value,
+//            revenueCurrency: adValue.currencyCode,
+//            additionalParameters: adRevenueParams)
         }
       }
     }

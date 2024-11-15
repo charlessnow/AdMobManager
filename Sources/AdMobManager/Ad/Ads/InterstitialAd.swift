@@ -7,7 +7,7 @@
 
 import UIKit
 import GoogleMobileAds
-import AppsFlyerAdRevenue
+//import AppsFlyerAdRevenue
 
 class InterstitialAd: NSObject, AdProtocol {
   private var interstitialAd: GADInterstitialAd?
@@ -143,18 +143,18 @@ extension InterstitialAd {
         self.didLoadSuccess?()
         
         ad.paidEventHandler = { adValue in
-          let adRevenueParams: [AnyHashable: Any] = [
-            kAppsFlyerAdRevenueCountry: "US",
-            kAppsFlyerAdRevenueAdUnit: adUnitID as Any,
-            kAppsFlyerAdRevenueAdType: "Interstitial"
-          ]
-          
-          AppsFlyerAdRevenue.shared().logAdRevenue(
-            monetizationNetwork: "admob",
-            mediationNetwork: MediationNetworkType.googleAdMob,
-            eventRevenue: adValue.value,
-            revenueCurrency: adValue.currencyCode,
-            additionalParameters: adRevenueParams)
+//          let adRevenueParams: [AnyHashable: Any] = [
+//            kAppsFlyerAdRevenueCountry: "US",
+//            kAppsFlyerAdRevenueAdUnit: adUnitID as Any,
+//            kAppsFlyerAdRevenueAdType: "Interstitial"
+//          ]
+//          
+//          AppsFlyerAdRevenue.shared().logAdRevenue(
+//            monetizationNetwork: "admob",
+//            mediationNetwork: MediationNetworkType.googleAdMob,
+//            eventRevenue: adValue.value,
+//            revenueCurrency: adValue.currencyCode,
+//            additionalParameters: adRevenueParams)
         }
       }
     }

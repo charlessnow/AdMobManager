@@ -7,7 +7,7 @@
 
 import UIKit
 import GoogleMobileAds
-import AppsFlyerAdRevenue
+//import AppsFlyerAdRevenue
 
 class NativeAd: NSObject {
   private var nativeAd: GADNativeAd?
@@ -66,18 +66,18 @@ extension NativeAd: GADNativeAdLoaderDelegate {
       guard let self else {
         return
       }
-      let adRevenueParams: [AnyHashable: Any] = [
-        kAppsFlyerAdRevenueCountry: "US",
-        kAppsFlyerAdRevenueAdUnit: adUnitID as Any,
-        kAppsFlyerAdRevenueAdType: "Native"
-      ]
-      
-      AppsFlyerAdRevenue.shared().logAdRevenue(
-        monetizationNetwork: "admob",
-        mediationNetwork: MediationNetworkType.googleAdMob,
-        eventRevenue: adValue.value,
-        revenueCurrency: adValue.currencyCode,
-        additionalParameters: adRevenueParams)
+//      let adRevenueParams: [AnyHashable: Any] = [
+//        kAppsFlyerAdRevenueCountry: "US",
+//        kAppsFlyerAdRevenueAdUnit: adUnitID as Any,
+//        kAppsFlyerAdRevenueAdType: "Native"
+//      ]
+//      
+//      AppsFlyerAdRevenue.shared().logAdRevenue(
+//        monetizationNetwork: "admob",
+//        mediationNetwork: MediationNetworkType.googleAdMob,
+//        eventRevenue: adValue.value,
+//        revenueCurrency: adValue.currencyCode,
+//        additionalParameters: adRevenueParams)
     }
   }
 }

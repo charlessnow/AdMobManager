@@ -349,17 +349,25 @@ extension AdMobManager {
   }
   
   private func decoding(adMobData: Data) {
-    guard let adMobConfig = try? JSONDecoder().decode(AdMobConfig.self, from: adMobData) else {
-      print("[AdMobManager] Invalid format!")
-      return
-    }
-    self.adMobConfig = adMobConfig
-    updateAdMobCache()
-    
-    if !didRequestConsent {
-      self.didRequestConsent = true
-      checkConsent()
-    }
+      
+      do {
+          let adMobConfig = try JSONDecoder().decode(AdMobConfig.self, from: adMobData)
+          self.adMobConfig = adMobConfig
+          updateAdMobCache()
+          
+          if !didRequestConsent {
+            self.didRequestConsent = true
+            checkConsent()
+          }
+      } catch {
+          debugPrint(error)
+          return
+      }
+//    guard let adMobConfig = try? JSONDecoder().decode(AdMobConfig.self, from: adMobData) else {
+//      print("[AdMobManager] Invalid format!")
+//      return
+//    }
+  
   }
   
   private func decoding(consentData: Data) {
