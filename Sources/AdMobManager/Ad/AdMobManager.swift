@@ -17,68 +17,72 @@ import UserMessagingPlatform
 /// ```
 /// - Warning: Available for Swift 5.3, Xcode 12.5 (macOS Big Sur). Support from iOS 13.0 or newer.
 public class AdMobManager {
-  public static var shared = AdMobManager()
-  
-  public enum State {
-    case unknow
-    case allow
-    case reject
-  }
-  
-  public enum OnceUsed: String {
-    case native
-    case banner
-  }
-  
-  public enum Reuse: String {
-    case splash
-    case appOpen
-    case interstitial
-    case rewarded
-    case rewardedInterstitial
-  }
-  
-  public enum AdType {
-    case onceUsed(_ type: OnceUsed)
-    case reuse(_ type: Reuse)
-  }
-  
-  @Published public private(set) var state: State = .unknow
-  private let remoteConfig = RemoteConfig.remoteConfig()
-  private let consentKey = "CMP"
-  private let remoteTimeout = 10.0
-  private var subscriptions = [AnyCancellable]()
-  private var remoteKey: String?
-  private var defaultData: Data?
-  private var didTimeout = false
-  private var didSetup = false
-  private var didRequestConsent = false
-  private var isDebug = false
-  private var testDeviceIdentifiers = [String]()
-  private var configValue: ((RemoteConfig) -> Void)?
-  private var isPremium = false
-  private var adMobConfig: AdMobConfig?
-  private var consentConfig: ConsentConfig?
-  private var listReuseAd: [String: AdProtocol] = [:]
-  private var listNativeAd: [String: NativeAd] = [:]
-  
-  public func upgradePremium() {
-    self.isPremium = true
-  }
-  
-  public func addActionConfigValue(_ handler: @escaping ((RemoteConfig) -> Void)) {
-    self.configValue = handler
-  }
-  
-  public func register(remoteKey: String, defaultData: Data) {
-    if isPremium {
-      print("[AdMobManager] Premium!")
-      self.state = .reject
+    public static var shared = AdMobManager()
+    
+    public enum State {
+        case unknow
+        case allow
+        case reject
     }
-    guard self.remoteKey == nil else {
-      return
+    
+    public enum OnceUsed: String {
+        case native
+        case banner
     }
-    print("[AdMobManager] Register!")
+    
+    public enum Reuse: String {
+        case splash
+        case appOpen
+        case interstitial
+        case rewarded
+        case rewardedInterstitial
+    }
+    
+    public enum AdType {
+        case onceUsed(_ type: OnceUsed)
+        case reuse(_ type: Reuse)
+    }
+    
+    @Published public private(set) var state: State = .unknow
+    private let remoteConfig = RemoteConfig.remoteConfig()
+    private let consentKey = "CMP"
+    private let remoteTimeout = 10.0
+    private var subscriptions = [AnyCancellable]()
+    private var remoteKey: String?
+    private var defaultData: Data?
+    private var didTimeout = false
+    private var didSetup = false
+    private var didRequestConsent = false
+    private var isDebug = false
+    private var testDeviceIdentifiers = [String]()
+    private var configValue: ((RemoteConfig) -> Void)?
+    private var isPremium = false
+    private var adMobConfig: AdMobConfig?
+    private var consentConfig: ConsentConfig?
+    private var listReuseAd: [String: AdProtocol] = [:]
+    private var listNativeAd: [String: NativeAd] = [:]
+    
+    public func upgradePremium() {
+        self.isPremium = true
+    }
+    
+    public func degradePremium() {
+        self.isPremium = false
+    }
+    
+    public func addActionConfigValue(_ handler: @escaping ((RemoteConfig) -> Void)) {
+        self.configValue = handler
+    }
+    
+    public func register(remoteKey: String, defaultData: Data) {
+        if isPremium {
+            print("[AdMobManager] Premium!")
+            self.state = .reject
+        }
+        guard self.remoteKey == nil else {
+            return
+        }
+        print("[AdMobManager] Register!")
     LogEventManager.shared.log(event: .register)
     self.remoteKey = remoteKey
     self.defaultData = defaultData

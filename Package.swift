@@ -15,8 +15,8 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
-    .package(name: "GoogleMobileAds", url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", from: "11.12.0"),
-    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "11.5.0")
+    .package(name: "GoogleMobileAds", url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", from: "11.13.0"),
+    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "11.7.0")
 //    .package(url: "https://github.com/AppsFlyerSDK/AppsFlyerFramework", from: "6.13.1"),
 //    .package(url: "https://github.com/AppsFlyerSDK/PurchaseConnector-Dynamic", from: "6.12.3"),
 //    .package(url: "https://github.com/AppsFlyerSDK/adrevenue-apple-sdk.git", from: "6.13.0")
