@@ -17,7 +17,7 @@ class InterstitialAd: NSObject, AdProtocol {
   private var retryAttempt = 0
   private var didLoadFail: Handler?
   private var didLoadSuccess: Handler?
-  private var didShowFail: Handler?
+  private var didShowFail: ErrorHadler?
   private var didEarnReward: Handler?
   private var didHide: Handler?
   
@@ -39,27 +39,28 @@ class InterstitialAd: NSObject, AdProtocol {
     return interstitialAd != nil
   }
   
-  func show(rootViewController: UIViewController,
-            didFail: Handler?,
-            didEarnReward: Handler?,
-            didHide: Handler?
-  ) {
-    guard isReady() else {
-      print("[AdMobManager] InterstitialAd display failure - not ready to show!")
-      didFail?()
-      return
+    
+    func show(rootViewController: UIViewController,
+              didFail: ErrorHadler?,
+              didEarnReward: Handler?,
+              didHide: Handler?) {
+        guard isReady() else {
+          print("[AdMobManager] InterstitialAd display failure - not ready to show!")
+            didFail?(AdMobMError.notReady)
+          return
+        }
+        guard !presentState else {
+          print("[AdMobManager] InterstitialAd display failure - ads are being displayed!")
+            didFail?(AdMobMError.beingDisplayed)
+          return
+        }
+        print("[AdMobManager] InterstitialAd requested to show!")
+        self.didShowFail = didFail
+        self.didHide = didHide
+        self.didEarnReward = didEarnReward
+        interstitialAd?.present(fromRootViewController: rootViewController)
     }
-    guard !presentState else {
-      print("[AdMobManager] InterstitialAd display failure - ads are being displayed!")
-      didFail?()
-      return
-    }
-    print("[AdMobManager] InterstitialAd requested to show!")
-    self.didShowFail = didFail
-    self.didHide = didHide
-    self.didEarnReward = didEarnReward
-    interstitialAd?.present(fromRootViewController: rootViewController)
-  }
+  
 }
 
 extension InterstitialAd: GADFullScreenContentDelegate {
@@ -67,7 +68,7 @@ extension InterstitialAd: GADFullScreenContentDelegate {
           didFailToPresentFullScreenContentWithError error: Error
   ) {
     print("[AdMobManager] InterstitialAd did fail to show content!")
-    didShowFail?()
+    didShowFail?(nil)
     self.interstitialAd = nil
     load()
   }

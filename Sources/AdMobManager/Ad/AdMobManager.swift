@@ -204,39 +204,39 @@ public class AdMobManager {
   public func show(type: Reuse,
                    name: String,
                    rootViewController: UIViewController,
-                   didFail: Handler?,
+                   didFail: ErrorHadler?,
                    didEarnReward: Handler? = nil,
                    didHide: Handler?
   ) {
     switch status(type: .reuse(type), name: name) {
     case false:
       print("[AdMobManager] Ads are not allowed to show!")
-      didFail?()
+        didFail?(AdMobMError.notAllow)
       return
     case true:
       break
     default:
-      didFail?()
+      didFail?(nil)
       return
     }
     guard let adConfig = getAd(type: .reuse(type), name: name) as? AdConfigProtocol else {
       print("[AdMobManager] Ads don't exist!")
-      didFail?()
+        didFail?(AdMobMError.notExist)
       return
     }
     guard let ad = listReuseAd[type.rawValue + adConfig.id] else {
       print("[AdMobManager] Ads do not exist!")
-      didFail?()
+        didFail?(AdMobMError.notExist)
       return
     }
     guard !checkIsPresent() else {
       print("[AdMobManager] Ads display failure - other ads is showing!")
-      didFail?()
+        didFail?(AdMobMError.otherAdsShowing)
       return
     }
     guard checkFrequency(adConfig: adConfig, ad: ad) else {
       print("[AdMobManager] Ads hasn't been displayed yet!")
-      didFail?()
+        didFail?(AdMobMError.displayNotYet)
       return
     }
     ad.show(rootViewController: rootViewController,

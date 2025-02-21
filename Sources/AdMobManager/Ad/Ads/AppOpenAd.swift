@@ -10,6 +10,8 @@ import GoogleMobileAds
 //import AppsFlyerAdRevenue
 
 class AppOpenAd: NSObject, AdProtocol {
+ 
+    
   private var appOpenAd: GADAppOpenAd?
   private var adUnitID: String?
   private var presentState = false
@@ -17,7 +19,7 @@ class AppOpenAd: NSObject, AdProtocol {
   private var retryAttempt = 0
   private var didLoadFail: Handler?
   private var didLoadSuccess: Handler?
-  private var didShowFail: Handler?
+  private var didShowFail: ErrorHadler?
   private var didEarnReward: Handler?
   private var didHide: Handler?
   
@@ -40,18 +42,18 @@ class AppOpenAd: NSObject, AdProtocol {
   }
   
   func show(rootViewController: UIViewController,
-            didFail: Handler?,
+            didFail: ErrorHadler?,
             didEarnReward: Handler?,
             didHide: Handler?
   ) {
     guard isReady() else {
       print("[AdMobManager] AppOpenAd display failure - not ready to show!")
-      didFail?()
+        didFail?(AdMobMError.notReady)
       return
     }
     guard !presentState else {
       print("[AdMobManager] AppOpenAd display failure - ads are being displayed!")
-      didFail?()
+        didFail?(AdMobMError.beingDisplayed)
       return
     }
     print("[AdMobManager] AppOpenAd requested to show!")
@@ -67,7 +69,7 @@ extension AppOpenAd: GADFullScreenContentDelegate {
           didFailToPresentFullScreenContentWithError error: Error
   ) {
     print("[AdMobManager] AppOpenAd did fail to show content!")
-    didShowFail?()
+    didShowFail?(nil)
     self.appOpenAd = nil
     load()
   }

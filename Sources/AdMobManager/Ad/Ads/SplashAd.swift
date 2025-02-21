@@ -19,7 +19,7 @@ class SplashAd: NSObject, AdProtocol {
   private var time = 0.0
   private var timer: Timer?
   private var timeInterval = 0.1
-  private var didFail: Handler?
+  private var didFail: ErrorHadler?
   private var didEarnReward: Handler?
   private var didHide: Handler?
   
@@ -36,13 +36,13 @@ class SplashAd: NSObject, AdProtocol {
   }
   
   func show(rootViewController: UIViewController,
-            didFail: Handler?,
+            didFail: ErrorHadler?,
             didEarnReward: Handler?,
             didHide: Handler?
   ) {
     guard !presentState else {
       print("[AdMobManager] SplashAd display failure - ads are being displayed!")
-      didFail?()
+        didFail?(AdMobMError.beingDisplayed)
       return
     }
     print("[AdMobManager] SplashAd requested to show!")
@@ -59,7 +59,7 @@ extension SplashAd: GADFullScreenContentDelegate {
           didFailToPresentFullScreenContentWithError error: Error
   ) {
     print("[AdMobManager] SplashAd did fail to show content!")
-    didFail?()
+    didFail?(nil)
     self.splashAd = nil
   }
   
@@ -84,13 +84,13 @@ extension SplashAd {
     
     guard let adUnitID = adUnitID else {
       print("[AdMobManager] SplashAd failed to load - not initialized yet! Please install ID.")
-      didFail?()
+      didFail?(nil)
       return
     }
     
     guard let rootViewController = rootViewController else {
       print("[AdMobManager] SplashAd display failure - can't find RootViewController!")
-      didFail?()
+      didFail?(nil)
       return
     }
     
@@ -117,7 +117,7 @@ extension SplashAd {
         self.invalidate()
         guard error == nil, let ad = ad else {
           print("[AdMobManager] SplashAd load fail - \(String(describing: error))!")
-          self.didFail?()
+          self.didFail?(nil)
           return
         }
         print("[AdMobManager] SplashAd did load!")
@@ -169,6 +169,6 @@ extension SplashAd {
       return
     }
     invalidate()
-    didFail?()
+    didFail?(nil)
   }
 }

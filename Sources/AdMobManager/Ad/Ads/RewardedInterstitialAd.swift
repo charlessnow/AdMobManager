@@ -10,6 +10,8 @@ import GoogleMobileAds
 //import AppsFlyerAdRevenue
 
 class RewardedInterstitialAd: NSObject, AdProtocol {
+ 
+    
   private var rewardedInterstitialAd: GADRewardedInterstitialAd?
   private var adUnitID: String?
   private var presentState = false
@@ -17,7 +19,7 @@ class RewardedInterstitialAd: NSObject, AdProtocol {
   private var retryAttempt = 0
   private var didLoadFail: Handler?
   private var didLoadSuccess: Handler?
-  private var didShowFail: Handler?
+ private var didShowFail: ErrorHadler?
   private var didEarnReward: Handler?
   private var didHide: Handler?
   
@@ -40,18 +42,18 @@ class RewardedInterstitialAd: NSObject, AdProtocol {
   }
   
   func show(rootViewController: UIViewController,
-            didFail: Handler?,
+            didFail: ErrorHadler?,
             didEarnReward: Handler?,
             didHide: Handler?
   ) {
     guard isReady() else {
       print("[AdMobManager] RewardedInterstitialAd display failure - not ready to show!")
-      didFail?()
+        didFail?(AdMobMError.notReady)
       return
     }
     guard !presentState else {
       print("[AdMobManager] RewardedInterstitialAd display failure - ads are being displayed!")
-      didFail?()
+        didFail?(AdMobMError.beingDisplayed)
       return
     }
     print("[AdMobManager] RewardedInterstitialAd requested to show!")
@@ -72,7 +74,7 @@ extension RewardedInterstitialAd: GADFullScreenContentDelegate {
           didFailToPresentFullScreenContentWithError error: Error
   ) {
     print("[AdMobManager] RewardedInterstitialAd did fail to show content!")
-    didShowFail?()
+    didShowFail?(nil)
     self.rewardedInterstitialAd = nil
     load()
   }

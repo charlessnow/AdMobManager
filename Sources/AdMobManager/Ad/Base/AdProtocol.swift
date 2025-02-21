@@ -12,7 +12,7 @@ import UIKit
   func isPresent() -> Bool
   @objc optional func isExist() -> Bool
   func show(rootViewController: UIViewController,
-            didFail: Handler?,
+            didFail: ErrorHadler?,
             didEarnReward: Handler?,
             didHide: Handler?)
 }
