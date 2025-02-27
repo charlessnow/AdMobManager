@@ -15,9 +15,11 @@ import UIKit
             didFail: ErrorHadler?,
             didEarnReward: Handler?,
             didHide: Handler?)
+    
+   
+    func config(didFail: Handler?, didSuccess: Handler?)
 }
 
 extension AdProtocol {
-  func config(timeout: Double) {}
-  func config(didFail: Handler?, didSuccess: Handler?) {}
+    func config(timeout: Double){}
 }

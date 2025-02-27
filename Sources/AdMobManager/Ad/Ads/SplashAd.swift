@@ -10,6 +10,10 @@ import GoogleMobileAds
 //import AppsFlyerAdRevenue
 
 class SplashAd: NSObject, AdProtocol {
+    func config(didFail: Handler?, didSuccess: Handler?) {
+        
+    }
+    
   private var splashAd: GADInterstitialAd?
   private var adUnitID: String?
   private var presentState = false
