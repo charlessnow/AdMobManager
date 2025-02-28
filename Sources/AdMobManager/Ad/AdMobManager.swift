@@ -491,6 +491,11 @@ extension AdMobManager {
     guard let adMobConfig else {
       return
     }
+      if isDebug {
+          GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers =
+          testDeviceIdentifiers
+      }
+      
     guard adMobConfig.status else {
       print("[AdMobManager] CMP not request consent!")
       LogEventManager.shared.log(event: .cmpNotRequestConsent)
